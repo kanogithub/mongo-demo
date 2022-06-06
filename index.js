@@ -11,7 +11,7 @@ mongoose
 // Mongoose Schema
 const courseSchema = new mongoose.Schema({
 	_id: String,
-	name: String,
+	name: { type: String, required: true },
 	author: String,
 	tags: [String],
 	data: { type: Date, default: Date.now },
@@ -29,8 +29,14 @@ async function creatCourse() {
 		tags: ['Angular', 'frontend'],
 		isPublished: true,
 	})
-	const result = await course.save()
-	// console.log(result)
+
+	try {
+		await course.validate()
+		// const result = await course.save()
+		// console.log(result)
+	} catch (err) {
+		console.log(err.message)
+	}
 }
 
 // Query
@@ -185,4 +191,4 @@ async function removeCourse(id) {
 	console.log(result)
 }
 
-removeCourse('5a6900fff467be65019a9001')
+creatCourse()
